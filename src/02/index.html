@@ -27,9 +27,28 @@
       timeline: false,
     })
 
-    viewer.scene.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(116.39, 39.9, 1500),
-    })
+    // 使用Scene设置初始坐标点
+    // viewer.scene.camera.setView({
+    //   destination: Cesium.Cartesian3.fromDegrees(116.39, 39.9, 1500),
+    // })
+
+    // 使用Entity添加一个几何图形
+    // const entity = viewer.entities.add({
+    //   position: Cesium.Cartesian3.fromDegrees(116.39, 39.9, 400),
+    //   point: {
+    //     pixelSize: 100,
+    //     color: new Cesium.Color(0, 1, 0, 1)
+    //   },
+    // })
+    // viewer.trackedEntity = entity;
+
+    // 支持数据类型：CzmlDataSource KmlDataSource GeoJsonDataSource
+    viewer.dataSources.add(
+      Cesium.GeoJsonDataSource.load(
+        "../../lib/SampleData/ne_10m_us_states.topojson"
+      )
+    )
+
   </script>
   
 </body>
