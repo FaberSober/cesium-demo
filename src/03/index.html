@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03</title>
+
+  <script src="../../lib/Cesium/Cesium.js"></script>
+  <link href="../../lib/Cesium/Widgets/widgets.css" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="puiedu-cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODM4YmM5YS02NDYyLTQ2YzAtODM1NS1iODY4OTc4ZDA4ZDMiLCJpZCI6ODM5NjQsImlhdCI6MTY0NjAxNzQ2MH0.V6TFAsawkIQ971B5kidOsH7TbU2GbStAQkdIXV-8QUo";
+    const viewer = new Cesium.Viewer('puiedu-cesiumContainer')
+
+    // Cesium 相机系统 setView flyTo
+    const position = Cesium.Cartesian3.fromDegrees(116.39, 39.91, 400);
+    // setView直接切换视角到指定位置
+    // viewer.camera.setView({
+    //   destination: position,
+    //   orientation: {
+    //     heading: Cesium.Math.toRadians(0),
+    //     pitch: Cesium.Math.toRadians(-90),
+    //     roll: 0,
+    //   },
+    // })
+
+    // flyTo带有动画效果
+    // viewer.camera.flyTo({
+    //   destination: position,
+    //   orientation: {
+    //     heading: Cesium.Math.toRadians(0),
+    //     pitch: Cesium.Math.toRadians(-90),
+    //     roll: 0,
+    //   },
+    //   duration: 5,
+    // })
+
+    // lookAt固定中心点，旋转视角
+    const center = Cesium.Cartesian3.fromDegrees(116.39, 39.91); 
+    const heading = Cesium.Math.toRadians(40);
+    const pitch = Cesium.Math.toRadians(-45);
+    const range = 3000;
+    viewer.camera.lookAt(center, new Cesium.HeadingPitchRange(heading, pitch, range))
+  </script>
+  
+</body>
+</html>
