@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09</title>
+
+  <script src="../../lib/Cesium/Cesium.js"></script>
+  <link href="../../lib/Cesium/Widgets/widgets.css" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="puiedu-cesiumContainer"></div>
+  <script>
+    // 加载地图
+    const esri = new Cesium.ArcGisMapServerImageryProvider({
+      url: "https://services.arcgisonline.com/ArcGIS/rest/services/world_Imagery/MapServer",
+    })
+    Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODM4YmM5YS02NDYyLTQ2YzAtODM1NS1iODY4OTc4ZDA4ZDMiLCJpZCI6ODM5NjQsImlhdCI6MTY0NjAxNzQ2MH0.V6TFAsawkIQ971B5kidOsH7TbU2GbStAQkdIXV-8QUo";
+    const viewer = new Cesium.Viewer('puiedu-cesiumContainer', {
+      baseLayerPicker: false,
+      imageryProvider: esri,
+      // 在cesium官网的My Assets中获取地形的数据资产
+      terrainProvider: new Cesium.CesiumTerrainProvider({
+        url: Cesium.IonResource.fromAssetId(1),
+        requestVertexNormals: true,
+        requestWaterMask: true,
+      }),
+    })
+    
+    // flyTo带有动画效果
+    const position = Cesium.Cartesian3.fromDegrees(116.39, 39.91, 400);
+    viewer.camera.flyTo({
+      destination: position,
+      orientation: {
+        heading: Cesium.Math.toRadians(0),
+        pitch: Cesium.Math.toRadians(-90),
+        roll: 0,
+      },
+      duration: 5,
+    })
+  </script>
+  
+</body>
+</html>
