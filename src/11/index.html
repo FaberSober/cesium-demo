@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11-空间数据加载</title>
+
+  <script src="../../lib/Cesium/Cesium.js"></script>
+  <link href="../../lib/Cesium/Widgets/widgets.css" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="puiedu-cesiumContainer"></div>
+  <script>
+    // 加载地图
+    const esri = new Cesium.ArcGisMapServerImageryProvider({
+      url: "https://services.arcgisonline.com/ArcGIS/rest/services/world_Imagery/MapServer",
+    })
+    Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODM4YmM5YS02NDYyLTQ2YzAtODM1NS1iODY4OTc4ZDA4ZDMiLCJpZCI6ODM5NjQsImlhdCI6MTY0NjAxNzQ2MH0.V6TFAsawkIQ971B5kidOsH7TbU2GbStAQkdIXV-8QUo";
+    const viewer = new Cesium.Viewer('puiedu-cesiumContainer', {
+      baseLayerPicker: false,
+      imageryProvider: esri,
+      // 在cesium官网的My Assets中获取地形的数据资产
+      terrainProvider: new Cesium.CesiumTerrainProvider({
+        url: Cesium.IonResource.fromAssetId(1),
+        requestVertexNormals: true,
+        requestWaterMask: true,
+      }),
+    })
+    
+    // flyTo带有动画效果
+    const position0 = Cesium.Cartesian3.fromDegrees(116.39, 39.91, 400);
+    viewer.camera.flyTo({
+      destination: position0,
+      orientation: {
+        heading: Cesium.Math.toRadians(0),
+        pitch: Cesium.Math.toRadians(-90),
+        roll: 0,
+      },
+      duration: 2,
+    })
+
+    // 空间数据加载
+    const position = new Cesium.Cartesian3.fromDegrees(116.39, 39.91, 0);
+    // 生成圆点
+    // const entity = viewer.entities.add({
+    //   position: position,
+    //   point: {
+    //     pixelSize: 100,
+    //     color: new Cesium.Color(1, 0, 0, 1),
+    //   },
+    // })
+
+    // 生成线
+    // const entity1 = viewer.entities.add({
+    //   polyline: {
+    //     show: true,
+    //     positions: new Cesium.Cartesian3.fromDegreesArray([116.39, 39.91, 116.40, 39.91]),
+    //     width: 5,
+    //     material: new Cesium.Color(0, 0, 1, 1),
+    //   },
+    // })
+
+    // 生成面
+    // const entity2 = viewer.entities.add({
+    //   position: position,
+    //   plane: {
+    //     plane: new Cesium.Plane(Cesium.Cartesian3.UNIT_Z, 0.0),
+    //     dimensions: new Cesium.Cartesian2(400, 300),
+    //     material: Cesium.Color.RED.withAlpha(0.5),
+    //     outline: true,
+    //     outlineColor: Cesium.Color.BLACK,
+    //   },
+    // })
+
+    // 生成文字
+    const entity3 = viewer.entities.add({
+      position: position,
+      label: {
+        text: '文字Hello World',
+        font: '50px Helvetica',
+        fillColor: Cesium.Color.SKYBLUE,
+      },
+    })
+  </script>
+  
+</body>
+</html>
