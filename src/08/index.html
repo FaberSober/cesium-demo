@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>01</title>
+  <title>08</title>
 
   <script src="../../lib/Cesium/Cesium.js"></script>
   <link href="../../lib/Cesium/Widgets/widgets.css" rel="stylesheet" />
@@ -21,7 +21,21 @@
   <script>
     Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODM4YmM5YS02NDYyLTQ2YzAtODM1NS1iODY4OTc4ZDA4ZDMiLCJpZCI6ODM5NjQsImlhdCI6MTY0NjAxNzQ2MH0.V6TFAsawkIQ971B5kidOsH7TbU2GbStAQkdIXV-8QUo";
     const viewer = new Cesium.Viewer('puiedu-cesiumContainer')
-    
+
+    // Cesium 相机系统 viewBoundingSphere
+    const position = Cesium.Cartesian3.fromDegrees(116.39, 39.91, 1500);
+    const orientation = Cesium.Transforms.headingPitchRollQuaternion(position, new Cesium.HeadingPitchRoll(-90, 0, 0))
+    const entity = viewer.entities.add({
+      position: position,
+      orientation: orientation,
+      model: {
+        uri: '../../lib/SampleData/models/CesiumAir/Cesium_Air.glb',
+        minimumPixelSize: 100,
+        maximumScale: 10000,
+        show: true,
+      },
+    })
+    viewer.camera.viewBoundingSphere(new Cesium.BoundingSphere(position, 20), new Cesium.HeadingPitchRoll(0, 00, 0))
   </script>
   
 </body>
