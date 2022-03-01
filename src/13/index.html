@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>13-鼠标交互|数据查询</title>
+
+  <script src="../../lib/Cesium/Cesium.js"></script>
+  <link href="../../lib/Cesium/Widgets/widgets.css" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="puiedu-cesiumContainer"></div>
+  <script>
+    // 加载地图
+    var esri = new Cesium.ArcGisMapServerImageryProvider({
+      url: "https://services.arcgisonline.com/ArcGIS/rest/services/world_Imagery/MapServer",
+    })
+    Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkODM4YmM5YS02NDYyLTQ2YzAtODM1NS1iODY4OTc4ZDA4ZDMiLCJpZCI6ODM5NjQsImlhdCI6MTY0NjAxNzQ2MH0.V6TFAsawkIQ971B5kidOsH7TbU2GbStAQkdIXV-8QUo";
+    var viewer = new Cesium.Viewer('puiedu-cesiumContainer', {
+      baseLayerPicker: false,
+      imageryProvider: esri,
+      // 在cesium官网的My Assets中获取地形的数据资产
+      terrainProvider: new Cesium.CesiumTerrainProvider({
+        url: Cesium.IonResource.fromAssetId(1),
+        requestVertexNormals: true,
+        requestWaterMask: true,
+      }),
+    })
+    
+    // flyTo带有动画效果
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(116.39, 39.91, 2500),
+      orientation: {
+        heading: Cesium.Math.toRadians(0),
+        pitch: Cesium.Math.toRadians(-90),
+        roll: 0,
+      },
+    })
+
+    // 添加图片的空间数据
+    var entity = viewer.entities.add({
+      id: 'planeLogo',
+      position: Cesium.Cartesian3.fromDegrees(116.39, 39.91, 0),
+      plane: {
+        plane: new Cesium.Plane(Cesium.Cartesian3.UNIT_Z, 0.0),
+        dimensions: new Cesium.Cartesian2(400, 400),
+        material: "../../assets/image/head2.png",
+        outline: true,
+        outlineColor: Cesium.Color.BLACK,
+      },
+      // 展示选定对象的信息
+      description: `<div>
+      <img width="100px" width="100px" height="100px" src="../../assets/image/head2.png" />
+      <h3>选定对象信息自定义描述</h3>
+      </div> `
+    })
+
+    // 添加事件监听
+    var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+    handler.setInputAction(function(movement) {
+      var pick = viewer.scene.pick(movement.position);
+      console.log('pick', pick)
+      if (Cesium.defined(pick) && (pick.id.id === 'planeLogo')) {
+        alert("点击事件监听触发")
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+
+    // scene.pick - 返回包含给定窗口位置基元的对象
+    // scene.drillpick - 返回给定窗口位置所有对象的列表
+    // Globe.pick - 返回给定光线和地形的交点
+
+    // Cesium.ScreenSpaceEventType.MIDDLE_CLICK - 鼠标中键点击
+    // Cesium.ScreenSpaceEventType.MOUSE_MOVE - 鼠标
+    // Cesium.ScreenSpaceEventType.RIGHT_CLICK - 鼠标右键点击
+
+    
+  </script>
+  
+</body>
+</html>
