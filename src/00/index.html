@@ -48,23 +48,23 @@
     // 添加三维数据
     var tileset = viewer.scene.primitives.add(
       new Cesium.Cesium3DTileset({
-        url: '../../assets/Scene/Production_2.json',
+        url: '../../assets/Scene/Scene2/Production_2.json',
         maximumScreenSpaceError: 2, // 最大的屏幕空间误差
         maximumNumberOfLoadedTiles: 1000, // 最大加载瓦片个数
       })
     )
 
-    // viewer.zoomTo(tileset);
-    const position = Cesium.Cartesian3.fromDegrees(118.887331, 31.91931, 1400);
-    viewer.camera.flyTo({
-      destination: position,
-      orientation: {
-        heading: Cesium.Math.toRadians(0),
-        pitch: Cesium.Math.toRadians(-90),
-        roll: 0,
-      },
-      duration: 5,
-    })
+    viewer.zoomTo(tileset);
+    // const position = Cesium.Cartesian3.fromDegrees(118.887331, 31.91931, 1400);
+    // viewer.camera.flyTo({
+    //   destination: position,
+    //   orientation: {
+    //     heading: Cesium.Math.toRadians(0),
+    //     pitch: Cesium.Math.toRadians(-90),
+    //     roll: 0,
+    //   },
+    //   duration: 5,
+    // })
 
   </script>
   
