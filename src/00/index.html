@@ -14,10 +14,22 @@
       margin: 0;
       padding: 0;
     }
+
+    #toolbar {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 999;;
+    }
   </style>
 </head>
 <body>
   <div id="puiedu-cesiumContainer"></div>
+
+  <div id="toolbar">
+    <button id="btn1">Scene1</button>
+    <button id="btn2">Scene2</button>
+  </div>
   <script>
     // 加载地图
     var esri = new Cesium.ArcGisMapServerImageryProvider({
@@ -45,8 +57,26 @@
     //   },
     // })
 
+    var handler= new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+    handler.setInputAction(function (event) {
+     var earthPosition  = viewer.camera.pickEllipsoid(event.position,viewer.scene.globe.ellipsoid);
+     var cartographic = Cesium.Cartographic.fromCartesian(earthPosition, viewer.scene.globe.ellipsoid, new Cesium.Cartographic());
+     var lat=Cesium.Math.toDegrees(cartographic.latitude);
+     var lng=Cesium.Math.toDegrees(cartographic.longitude);
+     var height=cartographic.height;
+     console.log("[Lng=>"+lng+",Lat=>"+lat+",H=>"+height+"]");
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
     // 添加三维数据
-    var tileset = viewer.scene.primitives.add(
+    var tileset1 = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: '../../assets/Scene/Scene1/Production_2.json',
+        maximumScreenSpaceError: 2, // 最大的屏幕空间误差
+        maximumNumberOfLoadedTiles: 1000, // 最大加载瓦片个数
+      })
+    )
+
+    var tileset2 = viewer.scene.primitives.add(
       new Cesium.Cesium3DTileset({
         url: '../../assets/Scene/Scene2/Production_2.json',
         maximumScreenSpaceError: 2, // 最大的屏幕空间误差
@@ -54,7 +84,7 @@
       })
     )
 
-    viewer.zoomTo(tileset);
+    viewer.zoomTo(tileset1);
     // const position = Cesium.Cartesian3.fromDegrees(118.887331, 31.91931, 1400);
     // viewer.camera.flyTo({
     //   destination: position,
@@ -65,6 +95,28 @@
     //   },
     //   duration: 5,
     // })
+    function flyTo(lng, lat) {
+      const position = Cesium.Cartesian3.fromDegrees(lng, lat, 1400);
+      viewer.camera.flyTo({
+        destination: position,
+        orientation: {
+          heading: Cesium.Math.toRadians(0),
+          pitch: Cesium.Math.toRadians(-90),
+          roll: 0,
+        },
+        duration: 5,
+      })
+    }
+
+    document.getElementById('btn1').addEventListener('click', function() {
+      // viewer.zoomTo(tileset1);
+      flyTo(118.887331, 31.91931)
+    })
+
+    document.getElementById('btn2').addEventListener('click', function() {
+      // viewer.zoomTo(tileset2);
+      flyTo(120.1019213603459, 30.58667125962813)
+    })
 
   </script>
   
