@@ -29,6 +29,7 @@
   <div id="toolbar">
     <button id="btn1">Scene1</button>
     <button id="btn2">Scene2</button>
+    <button id="btn3">Scene3</button>
   </div>
   <script>
     // 加载地图
@@ -70,7 +71,8 @@
     // 添加三维数据
     var tileset1 = viewer.scene.primitives.add(
       new Cesium.Cesium3DTileset({
-        url: '../../assets/Scene/Scene1/Production_2.json',
+        url: 'https://xjiot.oss-cn-beijing.aliyuncs.com/3dtiles/jiangsu/nanjing/daxuecheng/Scene1/Production_2.json',
+        // url: 'http://ztfp-prod-file2.dward.cn/tmp/xjiot/deploy/3dtiles/jiangsu/nanjing/daxuecheng/Production_2.json',
         maximumScreenSpaceError: 2, // 最大的屏幕空间误差
         maximumNumberOfLoadedTiles: 1000, // 最大加载瓦片个数
       })
@@ -84,7 +86,15 @@
       })
     )
 
-    viewer.zoomTo(tileset1);
+    var tileset3 = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: 'https://xjiot.oss-cn-beijing.aliyuncs.com/3dtiles/jiangsu/nanjing/jiangningwork1/Scene/Production_3.json',
+        maximumScreenSpaceError: 2, // 最大的屏幕空间误差
+        maximumNumberOfLoadedTiles: 1000, // 最大加载瓦片个数
+      })
+    )
+
+    viewer.zoomTo(tileset3);
     // const position = Cesium.Cartesian3.fromDegrees(118.887331, 31.91931, 1400);
     // viewer.camera.flyTo({
     //   destination: position,
@@ -116,6 +126,11 @@
     document.getElementById('btn2').addEventListener('click', function() {
       // viewer.zoomTo(tileset2);
       flyTo(120.1019213603459, 30.58667125962813)
+    })
+
+    document.getElementById('btn3').addEventListener('click', function() {
+      // viewer.zoomTo(tileset2);
+      flyTo(118.85367306174258, 31.861830345953194)
     })
 
   </script>
